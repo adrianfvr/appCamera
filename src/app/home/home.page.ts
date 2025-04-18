@@ -8,7 +8,9 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   standalone: false,
 })
 export class HomePage {
+  photos: { image: string; date: string; caption: string }[] = [];
   photo: string | undefined;
+  isValid = true;
 
   constructor() {}
 
@@ -19,6 +21,11 @@ export class HomePage {
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera,
     });
-    this.photo = image.dataUrl;
+    
+    this.photos.push({
+      image: image.dataUrl || '',
+      date: new Date().toLocaleDateString(),
+      caption: '',
+    });
   }
 }

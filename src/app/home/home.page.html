@@ -1,12 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title> Camera </ion-title>
+    <ion-title align="center"> CAMERA - AV </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button expand="block" (click)="takePicture()"> Take Photo </ion-button>
-  <div *ngIf="photo">
-    <img [src]="photo" alt="Photo" style="width: 100%; height: auto" />
-  </div>
+  <ion-card *ngFor="let item of photos">
+    <img alt="Silhouette of mountains" [src]="item.image" />
+    <ion-card-header>
+      <ion-card-subtitle>{{item.date}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content> {{item.caption}} </ion-card-content>
+  </ion-card>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    (click)="takePicture()"
+  >
+    <ion-fab-button>
+      <ion-icon name="camera-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
