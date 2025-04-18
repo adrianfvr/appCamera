@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ModalController } from '@ionic/angular';
 import { CaptionModalComponent } from '../components/caption-modal.component';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-home',
@@ -11,8 +12,25 @@ import { CaptionModalComponent } from '../components/caption-modal.component';
 })
 export class HomePage {
   photos: { image: string; date: string; caption: string }[] = [];
+  private _storage: Storage | null = null;
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    private modalController: ModalController,
+    private storage: Storage
+  ) {
+    this.initStorage();
+  }
+
+  async initStorage() {
+    const storage = await this.storage.create();
+    this._storage = storage;
+    const storedPhotos = await this._storage.get('photos');
+    if (storedPhotos) this.photos = storedPhotos;
+  }
+
+  async savePhotos() {
+    await this._storage?.set('photos', this.photos);
+  }
 
   async takePicture() {
     const image = await Camera.getPhoto({
@@ -34,6 +52,7 @@ export class HomePage {
           date: new Date().toLocaleDateString(),
           caption,
         });
+        this.savePhotos();
       }
     });
 
@@ -55,13 +74,15 @@ export class HomePage {
           const updatedCaption = data.data;
           if (updatedCaption) {
             this.photos[index].caption = updatedCaption; // Actualiza el caption de la foto
+            this.savePhotos();
           }
         });
         modal.present();
       });
   }
 
-  deletePhoto(index: number) {
+  async deletePhoto(index: number) {
     this.photos.splice(index, 1); // Elimina la foto del array
+    await this.savePhotos();
   }
 }
