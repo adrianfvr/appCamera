@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ModalController } from '@ionic/angular';
+import { CaptionModalComponent } from '../components/caption-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +12,8 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 export class HomePage {
   photos: { image: string; date: string; caption: string }[] = [];
   photo: string | undefined;
-  isValid = true;
 
-  constructor() {}
+  constructor(private modalController: ModalController) {}
 
   async takePicture() {
     const image = await Camera.getPhoto({
@@ -21,11 +22,23 @@ export class HomePage {
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera,
     });
-    
-    this.photos.push({
-      image: image.dataUrl || '',
-      date: new Date().toLocaleDateString(),
-      caption: '',
+
+    const modal = await this.modalController.create({
+      component: CaptionModalComponent,
     });
+
+    modal.onDidDismiss().then((data) => {
+      const caption = data.data;
+      if (caption) {
+        this.photos.push({
+          image: image.dataUrl || '',
+          date: new Date().toLocaleDateString(),
+          caption,
+        });
+      }
+    });
+
+    await modal.present();
   }
+
 }
