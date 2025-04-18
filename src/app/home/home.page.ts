@@ -11,7 +11,8 @@ import { Storage } from '@ionic/storage-angular';
   standalone: false,
 })
 export class HomePage {
-  photos: { image: string; date: string; caption: string }[] = [];
+  photos: { image: string; date: string; caption: string; edited?: boolean }[] =
+    [];
   private _storage: Storage | null = null;
 
   constructor(
@@ -74,6 +75,7 @@ export class HomePage {
           const updatedCaption = data.data;
           if (updatedCaption) {
             this.photos[index].caption = updatedCaption; // Actualiza el caption de la foto
+            this.photos[index].edited = true;
             this.savePhotos();
           }
         });

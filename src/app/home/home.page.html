@@ -15,7 +15,9 @@
   <ion-card *ngFor="let item of photos; let i = index">
     <img alt="Photo" [src]="item.image" class="photo-thumbnail" />
     <ion-card-header>
-      <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ item.date }}
+        <span *ngIf="item.edited" class="edited-tag">Edited</span>
+      </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <p>{{ item.caption }}</p>
