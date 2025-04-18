@@ -11,7 +11,6 @@ import { CaptionModalComponent } from '../components/caption-modal.component';
 })
 export class HomePage {
   photos: { image: string; date: string; caption: string }[] = [];
-  photo: string | undefined;
 
   constructor(private modalController: ModalController) {}
 
@@ -41,4 +40,28 @@ export class HomePage {
     await modal.present();
   }
 
+  editPhoto(index: number) {
+    const photo = this.photos[index];
+
+    this.modalController
+      .create({
+        component: CaptionModalComponent,
+        componentProps: {
+          caption: photo.caption,
+        },
+      })
+      .then((modal) => {
+        modal.onDidDismiss().then((data) => {
+          const updatedCaption = data.data;
+          if (updatedCaption) {
+            this.photos[index].caption = updatedCaption; // Actualiza el caption de la foto
+          }
+        });
+        modal.present();
+      });
+  }
+
+  deletePhoto(index: number) {
+    this.photos.splice(index, 1); // Elimina la foto del array
+  }
 }

@@ -1,18 +1,40 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title align="center"> CAMERA - AV </ion-title>
+<ion-header class="toolbar">
+  <ion-toolbar align="center">
+    <div class="toolbar-content" >
+      <img src="./assets/images/photos.png" width="30" height="30" alt="Logo" class="logo" />
+      <h1 class="toolbar-title">CAMERA - AV</h1>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let item of photos">
-    <img alt="Silhouette of mountains" [src]="item.image" />
-    <ion-card-header>
-      <ion-card-subtitle>{{item.date}}</ion-card-subtitle>
-    </ion-card-header>
+  <div class="empty-message" *ngIf="photos.length === 0">
+    <p>No hay fotos disponibles</p>
+  </div>
 
-    <ion-card-content> {{item.caption}} </ion-card-content>
+  <ion-card *ngFor="let item of photos; let i = index">
+    <img alt="Photo" [src]="item.image" class="photo-thumbnail" />
+    <ion-card-header>
+      <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ item.caption }}</p>
+      <div class="card-buttons">
+        <ion-icon
+          name="create-outline"
+          class="action-icon"
+          (click)="editPhoto(i)"
+        ></ion-icon>
+        <ion-icon
+          name="trash-outline"
+          class="action-icon"
+          color="danger"
+          (click)="deletePhoto(i)"
+        ></ion-icon>
+      </div>
+    </ion-card-content>
   </ion-card>
+
   <ion-fab
     vertical="bottom"
     horizontal="end"
@@ -20,7 +42,7 @@
     (click)="takePicture()"
   >
     <ion-fab-button>
-      <ion-icon name="camera-outline"></ion-icon>
+      <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
