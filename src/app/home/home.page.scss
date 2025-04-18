@@ -83,6 +83,7 @@ ion-card:hover {
   padding: 2px 6px; 
   margin-left: 5px; 
   display: inline-block;
+  letter-spacing: 1px;
 }
 
 ion-card-subtitle {
@@ -91,7 +92,7 @@ ion-card-subtitle {
 }
 
 ion-card-content p {
-  font-size: 14px;
+  font-size: 14px;  
   color: var(--ion-color-dark);
   margin-top: 10px;
 }

@@ -10,7 +10,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
       <ion-toolbar>
         <ion-title>Añadir Caption</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="dismiss()">Cerrar</ion-button>
+          <ion-button (click)="dismiss()"><ion-icon name="close"></ion-icon></ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
